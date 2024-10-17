@@ -12,5 +12,16 @@ class Event extends Model
     protected $fillable = ['name', 'date', 'location', 'image', 'type', 'description', 'is_vip', 'created_by'];
     protected $table = 'events';
 
-    
+    public const TYPES = [
+        'Concert',
+        'Workshop',
+        'Seminar',
+        'Webinar',
+        'Festival',
+        'Conference',
+        'Meetup',
+        'Networking Event',
+        'Sporting Event',
+        'Exhibition'
+    ];
 }
