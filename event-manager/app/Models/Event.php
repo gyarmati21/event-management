@@ -24,4 +24,16 @@ class Event extends Model
         'Sporting Event',
         'Exhibition'
     ];
+
+        // User who created the event
+        public function creator()
+        {
+            return $this->belongsTo(User::class, 'created_by');
+        }
+    
+        // users who joined the event
+        public function users()
+        {
+            return $this->belongsToMany(User::class, 'event_user');
+        }
 }

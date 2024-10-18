@@ -9,7 +9,9 @@ class EventController extends Controller
 {
     public function index()
     {
-        return view('event.events');
+        $events = Event::with('creator')->get();
+
+        return view('event.index', compact('events'));
     }
 
     public function create()
@@ -53,9 +55,23 @@ class EventController extends Controller
         ]);
     
         // Redirect to the dashboard with a success message
-        return redirect('/dashboard')->with('success', 'Event created successfully.');
+        return redirect()->route('events.index')->with('success', 'Event created successfully.');
 
     }
     
+    public function myEvents()
+    {
+        // get logged-in user
+        $user = auth()->user();
+
+        // get events the user created
+        $createdEvents = $user->createdEvents()->with('users')->get();
+
+        // get events the user joined
+        $joinedEvents = $user->joinedEvents()->with('creator')->get();
+
+        return view('event.myevents', compact('createdEvents', 'joinedEvents'));
+    }
+
 
 }
