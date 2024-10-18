@@ -8,11 +8,37 @@ use Illuminate\Support\Facades\File;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with('creator')->get();
+        $query = Event::query();
+    
+        // Search by title
+        if ($request->filled('title')) {
+            $query->where('name', 'like', '%' . $request->input('title') . '%');
+        }
+    
+        // Search by location
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->input('location') . '%');
+        }
+    
+        // Search by type
+        if ($request->filled('type')) {
+            $query->where('type', 'like', '%' . $request->input('type') . '%');
+        }
+    
+        // Sort by date
+        if ($request->filled('sort')) {
+            $query->orderBy('date', $request->input('sort'));
+        } else {
+            $query->orderBy('date', 'asc');  // Default sorting
+        }
+    
+        $events = $query->with('creator')->get();
+    
         return view('event.index', compact('events'));
     }
+    
 
     public function create()
     {

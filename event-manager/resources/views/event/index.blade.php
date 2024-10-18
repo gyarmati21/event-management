@@ -9,7 +9,39 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-2xl font-bold mb-4">All Events</h3>
+                    <form method="GET" action="{{ route('events.index') }}" class="mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Title Search -->
+                            <div class="flex flex-col">
+                                <label for="title" class="block text-gray-700 dark:text-gray-300 mb-2">Search by Title</label>
+                                <input type="text" id="title" name="title" value="{{ request('title') }}" class="block w-full text-gray-900 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 border border-gray-300 rounded-lg p-2">
+                            </div>
+                            <!-- Location Search -->
+                            <div class="flex flex-col">
+                                <label for="location" class="block text-gray-700 dark:text-gray-300 mb-2">Search by Location</label>
+                                <input type="text" id="location" name="location" value="{{ request('location') }}" class="block w-full text-gray-900 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 border border-gray-300 rounded-lg p-2">
+                            </div>
+                            <!-- Type Search -->
+                            <div class="flex flex-col">
+                                <label for="type" class="block text-gray-700 dark:text-gray-300 mb-2">Search by Type</label>
+                                <input type="text" id="type" name="type" value="{{ request('type') }}" class="block w-full text-gray-900 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 border border-gray-300 rounded-lg p-2">
+                            </div>
+                            <!-- Sorting by Date -->
+                            <div class="flex flex-col">
+                                <label for="sort" class="block text-gray-700 dark:text-gray-300 mb-2">Sort by Date</label>
+                                <select id="sort" name="sort" class="block w-full text-gray-900 dark:text-gray-200 bg-gray-200 dark:bg-gray-600 border border-gray-300 rounded-lg p-2">
+                                    <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>Closest to Farthest</option>
+                                    <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Farthest to Closest</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="px-4 py-2 bg-gray-700 text-white font-bold shadow hover:bg-orange-500 hover:shadow-lg transition-all">
+                                Filter Events
+                            </button>
+                        </div>
+                    </form>
                     @foreach ($events as $event)
                         <div class="flex items-start mb-6 p-6 shadow-lg border border-gray-200 bg-white dark:bg-gray-800 relative">
                             <div class="w-1/4">
@@ -30,7 +62,7 @@
                                         @if (auth()->user() && !$event->users->contains(auth()->user()))
                                             <form action="{{ route('events.join', $event->id) }}" method="POST">
                                                 @csrf
-                                                <button type="submit" class="px-4 py-2 bg-gray-700 text-white font-bold  shadow hover:bg-orange-500 hover:shadow-lg transition-all">
+                                                <button type="submit" class="px-4 py-2 bg-gray-700 text-white font-bold shadow hover:bg-orange-500 hover:shadow-lg transition-all">
                                                     Join
                                                 </button>
                                             </form>
