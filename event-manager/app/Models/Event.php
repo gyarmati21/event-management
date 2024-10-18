@@ -25,15 +25,21 @@ class Event extends Model
         'Exhibition'
     ];
 
-        // User who created the event
-        public function creator()
-        {
-            return $this->belongsTo(User::class, 'created_by');
-        }
-    
-        // users who joined the event
-        public function users()
-        {
-            return $this->belongsToMany(User::class, 'event_user');
-        }
+    // User who created the event
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    // users who joined the event
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'event_user');
+    }
+
+    // get count of users who joined the event
+    public function joinedUserCount()
+    {
+        return $this->users()->count();
+    }
 }

@@ -53,8 +53,7 @@ class EventController extends Controller
             'is_vip' => $request->has('is_vip') ? true : false, // Handling checkbox
             'created_by' => $createdBy,
         ]);
-    
-        // Redirect to the dashboard with a success message
+
         return redirect()->route('events.index')->with('success', 'Event created successfully.');
 
     }
@@ -72,6 +71,20 @@ class EventController extends Controller
 
         return view('event.myevents', compact('createdEvents', 'joinedEvents'));
     }
+
+    public function joinEvent(Event $event)
+    {
+        $user = auth()->user();
+
+        // Check if the user has already joined the event
+        if (!$event->users->contains($user)) {
+            // Attach the user to the event (inserting into event_user table)
+            $event->users()->attach($user->id);
+        }
+        
+        return redirect()->route('events.index')->with('success', 'You have successfully joined the event!');
+    }
+
 
 
 }

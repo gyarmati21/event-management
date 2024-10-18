@@ -23,6 +23,19 @@
                                 <p class="text-gray-500 mb-2">{{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }}</p>
                                 <p class="mb-2">{{ $event->description }}</p>
                                 <p class="text-gray-400">Created by: <strong>{{ $event->creator->name }}</strong></p>
+                                <p class="text-gray-400">Users joined: {{ $event->joinedUserCount() }}</p>
+
+                                <!-- If user is logged in and hasn't joined the event, show the Join button -->
+                                @if (auth()->user() && !$event->users->contains(auth()->user()))
+                                    <form action="{{ route('events.join', $event->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary mt-2">
+                                            Join Event
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-green-500 mt-2">Already Joined</span>
+                                @endif
                             </div>
                         </div>
                     @endforeach
