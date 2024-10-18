@@ -15,43 +15,52 @@
                         <!-- Event Name -->
                         <div>
                             <label for="name">{{ __('Event Name') }}</label>
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                            <x-text-input id="name" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                          type="text" name="name" value="{{ old('name') }}" required autofocus />
                         </div>
 
-                        <!-- Event Date -->
+                        <!-- Event Date and Time -->
                         <div class="mt-4">
-                            <label for="date">{{ __('Event Date') }}</label>
-                            <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" :value="old('date')" required />
+                            <label for="date">{{ __('Event Date and Time') }}</label>
+                            <x-text-input id="date" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                          type="datetime-local" name="date" value="{{ old('date') }}" required />
                         </div>
 
                         <!-- Location -->
                         <div class="mt-4">
                             <label for="location">{{ __('Location') }}</label>
-                            <x-text-input id="location" class="block mt-1 w-full" type="text" name="location" :value="old('location')" required />
+                            <x-text-input id="location" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                          type="text" name="location" value="{{ old('location') }}" required />
                         </div>
 
                         <!-- Image -->
                         <div class="mt-4">
                             <label for="image">{{ __('Event Image') }}</label>
-                            <x-text-input id="image" class="block mt-1 w-full" type="file" name="image" />
+                            <input id="image" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                   type="file" name="image" />
                         </div>
 
                         <!-- Type -->
                         <div class="mt-4">
                             <label for="type">{{ __('Event Type') }}</label>
-                            <x-text-input id="type" class="block mt-1 w-full" type="text" name="type" :value="old('type')" required />
+                            <x-text-input id="type" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                          type="text" name="type" value="{{ old('type') }}" required />
                         </div>
 
                         <!-- Description -->
                         <div class="mt-4">
                             <label for="description">{{ __('Event Description') }}</label>
-                            <textarea id="description" class="block mt-1 w-full" name="description" required>{{ old('description') }}</textarea>
+                            <textarea id="description" class="block mt-1 w-full bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-200" 
+                                      name="description" required>{{ old('description') }}</textarea>
                         </div>
 
                         <!-- VIP Checkbox -->
                         <div class="mt-4">
-                            <label for="is_vip">{{ __('VIP Event') }}</label>
-                            <x-text-input id="is_vip" class="block mt-1" type="checkbox" name="is_vip" :value="old('is_vip')" />
+                            <label for="is_vip" class="inline-flex items-center">
+                                <input type="checkbox" id="is_vip" name="is_vip" class="rounded bg-gray-300 dark:bg-gray-700" 
+                                       {{ old('is_vip') ? 'checked' : '' }}>
+                                <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('VIP Event') }}</span>
+                            </label>
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

@@ -11,31 +11,39 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-2xl font-bold mb-4">All Events</h3>
                     @foreach ($events as $event)
-                        <div class="flex items-start mb-6 border-2 border-white p-4 shadow-md">
-                            <!-- Event Image -->
-                            <div class="w-1/3">
-                                <img src="{{ $event->image ? asset('storage/' . $event->image) : asset('path/to/default/image.jpg') }}" alt="{{ $event->name }}" class="w-full h-auto rounded-lg">
+                        <div class="flex items-start mb-6 p-6 shadow-lg border border-gray-200 bg-white dark:bg-gray-800 relative">
+                            <div class="w-1/4">
+                                <img src="{{ $event->image ? asset($event->image) : asset('path/to/default/image.jpg') }}" alt="{{ $event->name }}" class="w-full h-auto rounded-lg">
                             </div>
-                            <!-- Event Details -->
-                            <div class="w-2/3 pl-4">
-                                <h4 class="text-xl font-semibold">{{ $event->name }}</h4>
-                                <p class="text-gray-600 mb-1">{{ $event->type }}</p>
-                                <p class="text-gray-500 mb-2">{{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }}</p>
-                                <p class="mb-2">{{ $event->description }}</p>
-                                <p class="text-gray-400">Created by: <strong>{{ $event->creator->name }}</strong></p>
+                            
+                            <div class="flex-grow pl-4">
+                                <div class="flex justify-between mb-2">
+                                    <div class="flex flex-col w-3/4">
+                                        <h4 class="text-xl font-semibold">{{ $event->name }}</h4>
+                                        <div class="flex space-x-4 mt-1">
+                                            <span class="text-gray-600">{{ $event->type }}</span>
+                                            <span class="text-gray-500">{{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }}</span>
+                                            <span class="text-gray-500">{{ $event->location }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-1/6 text-right">
+                                        @if (auth()->user() && !$event->users->contains(auth()->user()))
+                                            <form action="{{ route('events.join', $event->id) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="px-4 py-2 bg-gray-700 text-white font-bold  shadow hover:bg-orange-500 hover:shadow-lg transition-all">
+                                                    Join
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-green-500">Joined</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <p class="mt-4">{{ $event->description }}</p>
+                            </div>
+                            
+                            <div class="absolute bottom-0 right-0 pr-4 pb-4">
                                 <p class="text-gray-400">Users joined: {{ $event->joinedUserCount() }}</p>
-
-                                <!-- If user is logged in and hasn't joined the event, show the Join button -->
-                                @if (auth()->user() && !$event->users->contains(auth()->user()))
-                                    <form action="{{ route('events.join', $event->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary mt-2">
-                                            Join Event
-                                        </button>
-                                    </form>
-                                @else
-                                    <span class="text-green-500 mt-2">Already Joined</span>
-                                @endif
                             </div>
                         </div>
                     @endforeach
